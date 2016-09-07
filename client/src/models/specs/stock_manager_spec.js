@@ -75,6 +75,14 @@ describe('StockManager', function(){
     assert.equal(stockManager.calculateTotalStockValue(), 297);
   });
 
+  it('should be able to remove a product from the stock', function(){
+    stockManager.addProduct(product1);
+    stockManager.addProduct(product3);
+    stockManager.removeProductFromStock(product3, 1);
+    assert.equal(stockManager.countTotalProductsInStock(), 1);
+    assert.equal(stockManager.calculateTotalStockValue(), 495);
+  });
+
 
 });
 
