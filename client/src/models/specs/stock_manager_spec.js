@@ -60,19 +60,19 @@ describe('StockManager', function(){
 
   it('should be able to check if an item is in stock', function(){
     stockManager.addProduct(product1);
-    assert.equal(stockManager.checkIfItemInStock(product1), true);
+    assert.equal(stockManager.checkIfItemInStock(product1, 4), true);
   });
 
   it('should be able to check if an item is not in stock', function(){
     stockManager.addProduct(product2);
-    assert.equal(stockManager.checkIfItemInStock(product2), false);
+    assert.equal(stockManager.checkIfItemInStock(product2, 1), false);
   });
 
   // it('should be able to remove an item from the stock', function(){
   //   stockManager.addProduct(product1);
-  //   stockManager.addProduct(product3);
-  //   stockManager.removeProduct(product1);
-  //   assert.equal(stockManager.countTotalProductsInStock(), 13);
+  //   stockManager.removeItemFromStock(product1, 1);
+  //   assert.equal(stockManager.countTotalItemsInStock(), 4);
+  //   assert.equal(stockManager.calculateTotalStockValue(), 396);
   // });
 
 
