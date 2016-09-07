@@ -31,12 +31,12 @@ beforeEach(function(){
   });
 });
 
-describe('ComplexVoucher', function(){
-  it('check if the special item category is present in the basket', function(){
-    shoppingBasket.addProduct(product1);
-    assert.equal(voucher1.checkForSpecialItem(shoppingBasket), true);
-  });
-});
+// describe('ComplexVoucher', function(){
+//   it('check if the special item category is present in the basket', function(){
+//     shoppingBasket.addProduct(product1);
+//     assert.equal(voucher1.checkForSpecialItem(shoppingBasket), true);
+//   });
+// });
 
 
 
