@@ -83,6 +83,23 @@ describe('StockManager', function(){
     assert.equal(stockManager.calculateTotalStockValue(), 495);
   });
 
+  it('should be able to filter products by category', function(){
+    stockManager.addProduct(product1);
+    stockManager.addProduct(product3);
+    assert.deepEqual(stockManager.filterProductsByCategory("Footwear"), [product1]);
+  });
+
+  it('should be able to filter products by department', function(){
+    stockManager.addProduct(product1);
+    stockManager.addProduct(product3);
+    assert.deepEqual(stockManager.filterProductsByDepartment("Men's"), [product3]);
+  });
+
+  it('should be able to filter products by price', function(){
+    stockManager.addProduct(product1);
+    stockManager.addProduct(product3);
+    assert.deepEqual(stockManager.filterProductsByPrice(80, 100), [product1]);
+  });
 
 });
 
