@@ -72,10 +72,15 @@ describe('Transaction', function(){
     assert.equal(transaction.checkSpecialItemPresent(shoppingBasket, fifteenVoucher), false);
   });
 
-  // it('should check if a basket meets the discount voucher threshold', function(){
-  //   shoppingBasket.addProduct(product1);
-  //   assert.equal()
-  // });
+  it('should check if a basket meets the discount voucher threshold', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(transaction.checkEligibleDiscountValueReached(shoppingBasket, tenVoucher), true);
+  });
+
+  it('should check if a basket does not meet the discount voucher threshold', function(){
+    shoppingBasket.addProduct(product3);
+    assert.equal(transaction.checkEligibleDiscountValueReached(shoppingBasket, tenVoucher), false);
+  });
 
   // it('should check if a five pound discount voucher is eligible', function(){
   //   shoppingBasket.addProduct(product1);

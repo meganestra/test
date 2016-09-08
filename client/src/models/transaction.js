@@ -7,15 +7,15 @@ var Transaction = function(){
 Transaction.prototype = {
 
   checkSpecialItemPresent: function(shoppingBasket, voucher){
-
     var matchedItems = [];
-
-    _.filter(voucher.specialItems, function(specialItem){
+    _.forEach(voucher.specialItems, function(specialItem){
       matchedItems = _.filter(shoppingBasket.basket, _.matches(specialItem));
     });
-
     return (matchedItems.length === voucher.specialItems.length);
+  },
 
+  checkEligibleDiscountValueReached: function(shoppingBasket, voucher){
+    return (shoppingBasket.value >= voucher.eligibleValue);
   }
 
 
