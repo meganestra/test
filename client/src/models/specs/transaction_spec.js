@@ -31,17 +31,20 @@ beforeEach(function(){
 
   transactionWithFiveVoucher = new Transaction({
     "shoppingBasket": shoppingBasket,
-    "voucher": fiveVoucher
+    "voucher": fiveVoucher,
+    "stock": stock
   });
 
   transactionWithTenVoucher = new Transaction({
     "shoppingBasket": shoppingBasket,
-    "voucher": tenVoucher
+    "voucher": tenVoucher,
+    "stock": stock
   });
 
   transactionWithFifteenVoucher = new Transaction({
     "shoppingBasket": shoppingBasket,
-    "voucher": fifteenVoucher
+    "voucher": fifteenVoucher,
+    "stock": stock
   });
 
   product1 = new Product({
@@ -155,6 +158,14 @@ describe('Transaction', function(){
     assert.equal(shoppingBasket.value, 49.99);
   });
 
+  it('should move the product from stock to the basket', function(){
+    stock.addProduct(product3);
+    transaction = new Transaction({"shoppingBasket": shoppingBasket, "voucher": fiveVoucher, "stock":stock});
+    transaction.moveProductFromStockToBasket(product3, 1);
+    assert.equal(product3.quantityInStock, 8);
+    assert.equal(shoppingBasket.value, 49.99);
+    assert.equal(shoppingBasket.numberOfProducts(), 1);
+  })
 
 });
 
