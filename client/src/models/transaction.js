@@ -1,51 +1,27 @@
 var _ = require('lodash');
 
-var Transaction = function(){
-
+var Transaction = function(params){
+  this.shoppingBasket = params.shoppingBasket;
+  this.voucher = params.voucher;
 };
 
 Transaction.prototype = {
 
-  checkSpecialItemPresent: function(shoppingBasket, voucher){
+  checkSpecialItemPresent: function(){
     var matchedItems = [];
-    _.forEach(voucher.specialItems, function(specialItem){
-      matchedItems = _.filter(shoppingBasket.basket, _.matches(specialItem));
+    _.forEach(this.voucher.specialItems, function(specialItem){
+      matchedItems = _.filter(this.shoppingBasket.basket, _.matches(specialItem));
     });
-    return (matchedItems.length === voucher.specialItems.length);
+    return (matchedItems.length === this.voucher.specialItems.length);
   },
 
-  checkEligibleDiscountValueReached: function(shoppingBasket, voucher){
-    return (shoppingBasket.value >= voucher.eligibleValue);
+  checkEligibleDiscountValueReached: function(){
+    return (this.shoppingBasket.value >= this.voucher.eligibleValue);
+  },
+
+  checkEligibleForDiscountVoucher: function(){
+    return (this.checkSpecialItemPresent() && this.checkEligibleDiscountValueReached());
   }
-
-
-  // checkForSpecialItemPurchase: function(shoppingBasket, specialItem){
-  //   var inBasket = false;
-  //   _.forEach(shoppingBasket.basket, function(product){
-  //     if(product.category === specialItem){
-  //       inBasket = true;
-  //     }
-  //   })
-  //   return inBasket;
-  // },
-
-  // checkSimpleDiscountEligibility: function(shoppingBasket, discountVoucher){
-  //   if(shoppingBasket.value >= discountVoucher.eligibleValue){
-  //     return true
-  //   };
-  // },
-
-  // checkAdvancedDiscountEligibility: function(shoppingBasket, discountVoucher){
-  //   if(shoppingBasket.value >= discountVoucher.eligibleValue && checkForSpecialItemPurchase(shoppingBasket, discountVoucher.specialItem)){
-  //     return true
-  //   };
-  // }
-
-  // applyEligibleDiscount: function(shoppingBasket, discountVoucher){
-  //   if(this.checkDiscountEligibility()){
-  //     return shoppingBasket.value - discountVoucher.discountValue;
-  //   }
-  // }
 
 };
 

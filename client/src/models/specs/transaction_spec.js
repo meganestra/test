@@ -7,8 +7,6 @@ var DiscountVoucher = require('../discount_voucher');
 
 beforeEach(function(){
 
-  transaction = new Transaction();
-
   stockManager = new StockManager();
 
   shoppingBasket = new ShoppingBasket();
@@ -29,6 +27,21 @@ beforeEach(function(){
     "discountValue": 15,
     "eligibleValue": 75,
     "specialItems": [{"category": "Footwear"}]
+  });
+
+  transactionWithFiveVoucher = new Transaction({
+    "shoppingBasket": shoppingBasket,
+    "voucher": fiveVoucher
+  });
+
+  transactionWithTenVoucher = new Transaction({
+    "shoppingBasket": shoppingBasket,
+    "voucher": tenVoucher
+  });
+
+  transactionWithFifteenVoucher = new Transaction({
+    "shoppingBasket": shoppingBasket,
+    "voucher": fifteenVoucher
   });
 
   product1 = new Product({
@@ -64,40 +77,52 @@ describe('Transaction', function(){
 
   it('should check if a basket contains the special items', function(){
     shoppingBasket.addProduct(product1);
-    assert.equal(transaction.checkSpecialItemPresent(shoppingBasket, fifteenVoucher), true);
+    assert.equal(transactionWithFifteenVoucher.checkSpecialItemPresent(), true);
   });
 
   it('should check if a basket does not contain the special items', function(){
     shoppingBasket.addProduct(product3);
-    assert.equal(transaction.checkSpecialItemPresent(shoppingBasket, fifteenVoucher), false);
+    assert.equal(transactionWithFifteenVoucher.checkSpecialItemPresent(), false);
   });
 
   it('should check if a basket meets the discount voucher threshold', function(){
     shoppingBasket.addProduct(product1);
-    assert.equal(transaction.checkEligibleDiscountValueReached(shoppingBasket, tenVoucher), true);
+    assert.equal(transactionWithTenVoucher.checkEligibleDiscountValueReached(), true);
   });
 
   it('should check if a basket does not meet the discount voucher threshold', function(){
     shoppingBasket.addProduct(product3);
-    assert.equal(transaction.checkEligibleDiscountValueReached(shoppingBasket, tenVoucher), false);
+    assert.equal(transactionWithTenVoucher.checkEligibleDiscountValueReached(), false);
   });
 
-  // it('should check if a five pound discount voucher is eligible', function(){
-  //   shoppingBasket.addProduct(product1);
-  //   shoppingBasket.addProduct(product3);
-  //   assert.equal(transaction.checkSimpleDiscountEligibility(shoppingBasket, fiveVoucher), true);
-  // });
+  it('should check if a basket is eligible for a five pound discount voucher', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(transactionWithFiveVoucher.checkEligibleForDiscountVoucher(), true);
+  });
 
-  // it('should check if a ten pound discount voucher is eligible', function(){
-  //   shoppingBasket.addProduct(product1);
-  //   shoppingBasket.addProduct(product3);
-  //   assert.equal(transaction.checkSimpleDiscountEligibility(shoppingBasket, tenVoucher), true);
-  // });
+  it('should check if a basket is eligible for a five pound discount voucher', function(){
+    assert.equal(transactionWithFiveVoucher.checkEligibleForDiscountVoucher(), false);
+  });
 
-  // it('should check if a fifteen pound discount voucher is eligible', function(){
-  //   shoppingBasket.addProduct(product3);
-  //   assert.equal(transaction.checkAdvancedDiscountEligibility(shoppingBasket, fifteenVoucher), false);
-  // });
+  it('should check if a basket is eligible for a ten pound discount voucher', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(transactionWithTenVoucher.checkEligibleForDiscountVoucher(), true);
+  });
+
+  it('should check if a basket is not eligible for a ten pound discount voucher', function(){
+    shoppingBasket.addProduct(product3);
+    assert.equal(transactionWithTenVoucher.checkEligibleForDiscountVoucher(), false);
+  });
+
+  it('should check if a basket is eligible for a fifteen pound discount voucher', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(transactionWithFifteenVoucher.checkEligibleForDiscountVoucher(), true);
+  });
+
+  it('should check if a basket is not eligible for a fifteen pound discount voucher', function(){
+    shoppingBasket.addProduct(product3);
+    assert.equal(transactionWithFifteenVoucher.checkEligibleForDiscountVoucher(), false);
+  });
 
 });
 
