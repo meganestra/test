@@ -124,6 +124,12 @@ describe('Transaction', function(){
     assert.equal(transactionWithFifteenVoucher.checkEligibleForDiscountVoucher(), false);
   });
 
+  it('should apply a discount to a basket', function(){
+    shoppingBasket.addProduct(product1);
+    transactionWithFifteenVoucher.applyDiscountVoucher();
+    assert.equal(shoppingBasket.value, 84.00);
+  });
+
 });
 
 
