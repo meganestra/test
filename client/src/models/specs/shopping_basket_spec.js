@@ -1,6 +1,7 @@
 var assert = require('assert');
 var ShoppingBasket = require('../shopping_basket');
 var Product = require('../product');
+var DiscountVoucher = require('../discount_voucher');
 
 beforeEach(function(){
 
@@ -42,6 +43,24 @@ beforeEach(function(){
     "quantityInStock": 3
   });
 
+  fiveVoucher = new DiscountVoucher({
+    "discountValue": 5,
+    "eligibleValue": 5,
+    "specialItems": []
+  });
+
+  tenVoucher = new DiscountVoucher({
+    "discountValue": 10,
+    "eligibleValue": 50,
+    "specialItems": []
+  });
+
+  fifteenVoucher = new DiscountVoucher({
+    "discountValue": 15,
+    "eligibleValue": 75,
+    "specialItems": [{"category": "Footwear"}]
+  });
+
 });
 
 describe('ShoppingBasket', function(){
@@ -81,7 +100,67 @@ describe('ShoppingBasket', function(){
     shoppingBasket.emptyBasket();
     assert.equal(0, shoppingBasket.numberOfProducts());
     assert.equal(0, shoppingBasket.value);
+  });
 
+  it('should check if a basket contains the special items', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(shoppingBasket.checkSpecialItemPresent(fifteenVoucher), true);
+  });
+
+  it('should check if a basket does not contain the special items', function(){
+    shoppingBasket.addProduct(product3);
+    assert.equal(shoppingBasket.checkSpecialItemPresent(fifteenVoucher), false);
+  });
+
+  it('should check if a basket meets the discount voucher threshold', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(shoppingBasket.checkEligibleDiscountValueReached(fiveVoucher), true);
+  });
+
+  it('should check if a basket does not meet the discount voucher threshold', function(){
+    shoppingBasket.addProduct(product3);
+    assert.equal(shoppingBasket.checkEligibleDiscountValueReached(fifteenVoucher), false);
+  });
+
+  it('should check if a basket is eligible for a five pound discount voucher', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(shoppingBasket.checkEligibleForDiscountVoucher(fiveVoucher), true);
+  });
+
+  it('should check if a basket is eligible for a five pound discount voucher', function(){
+    assert.equal(shoppingBasket.checkEligibleForDiscountVoucher(fiveVoucher), false);
+  });
+
+  it('should check if a basket is eligible for a ten pound discount voucher', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(shoppingBasket.checkEligibleForDiscountVoucher(tenVoucher), true);
+  });
+
+  it('should check if a basket is not eligible for a ten pound discount voucher', function(){
+    shoppingBasket.addProduct(product3);
+    assert.equal(shoppingBasket.checkEligibleForDiscountVoucher(tenVoucher), false);
+  });
+
+  it('should check if a basket is eligible for a fifteen pound discount voucher', function(){
+    shoppingBasket.addProduct(product1);
+    assert.equal(shoppingBasket.checkEligibleForDiscountVoucher(fifteenVoucher), true);
+  });
+
+  it('should check if a basket is not eligible for a fifteen pound discount voucher', function(){
+    shoppingBasket.addProduct(product3);
+    assert.equal(shoppingBasket.checkEligibleForDiscountVoucher(fifteenVoucher), false);
+  });
+
+  it('should apply a discount to a basket', function(){
+    shoppingBasket.addProduct(product1);
+    shoppingBasket.applyDiscountVoucher(fifteenVoucher);
+    assert.equal(shoppingBasket.value, 84.00);
+  });
+
+  it('should refuse to apply a discount to a basket', function(){
+    shoppingBasket.addProduct(product3);
+    shoppingBasket.applyDiscountVoucher(fifteenVoucher);
+    assert.equal(shoppingBasket.value, 49.99);
   });
 
 });
