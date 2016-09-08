@@ -130,6 +130,12 @@ describe('Transaction', function(){
     assert.equal(shoppingBasket.value, 84.00);
   });
 
+  it('should refuse to apply a discount to a basket', function(){
+    shoppingBasket.addProduct(product3);
+    transactionWithFifteenVoucher.applyDiscountVoucher();
+    assert.equal(shoppingBasket.value, 49.99);
+  });
+
 });
 
 
