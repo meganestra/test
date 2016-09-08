@@ -33,6 +33,15 @@ beforeEach(function(){
     "quantityInStock": 9
   });
 
+  product4 = new Product({
+    "productName": "Fine Stripe Short Sleeve Shirt, Green",
+    "department": "Men's",
+    "category": "Casualwear",
+    "price": 49.99,
+    "salePrice": 39.99,
+    "quantityInStock": 3
+  });
+
 });
 
 describe('ShoppingBasket', function(){
@@ -45,9 +54,15 @@ describe('ShoppingBasket', function(){
     assert.equal(0, shoppingBasket.value);
   });
 
-  it('should be able to receive a product and add to value', function(){
+  it('should be able to receive a non sale product and add price to value', function(){
     shoppingBasket.addProduct(product1);
-    // assert.equal(99.00, shoppingBasket.value);
+    assert.equal(99.00, shoppingBasket.value);
+    assert.equal(1, shoppingBasket.numberOfProducts());
+  });
+
+  it('should be able to receive a sale product and add sale price to value', function(){
+    shoppingBasket.addProduct(product4);
+    assert.equal(39.99, shoppingBasket.value);
     assert.equal(1, shoppingBasket.numberOfProducts());
   });
 
@@ -58,12 +73,6 @@ describe('ShoppingBasket', function(){
     // assert.equal(19.00, shoppingBasket.value);
     assert.equal(1, shoppingBasket.numberOfProducts());
   });
-
-  // it('should be able to calculate the total value of all products added', function(){
-  //   shoppingBasket.addProduct(product1);
-  //   shoppingBasket.addProduct(product2);
-  //   assert.equal(118.00, shoppingBasket.value);
-  // });
 
   it('should be able to empty', function(){
     shoppingBasket.addProduct(product1);
