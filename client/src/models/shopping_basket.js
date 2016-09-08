@@ -1,6 +1,8 @@
+var _ = require('lodash');
+
 var ShoppingBasket = function(){
-  this.value = 0;
   this.basket = [];
+  this.value = 0;
 };
 
 ShoppingBasket.prototype = {
@@ -9,13 +11,9 @@ ShoppingBasket.prototype = {
     return this.basket.length;
   },
 
-  // checkProductInStock: function(product){
-  //   // prevent customer from purchasing out of stock item
-  //   // prevent customer from purchasing too many of the same item
-  //   return true if (product.quantityInStock > 0)
-  // },
-
   addProduct: function(product){
+    // TO DO: add a guard against out of stock items
+    // TO DO: check if in sale and if true, use sale price
     this.basket.push(product);
     this.value += product.price;
   },
@@ -27,16 +25,8 @@ ShoppingBasket.prototype = {
   },
 
   emptyBasket: function(){
-    // remove all products from basket
-  },
-
-  // calculateBasketValue: function(){
-
-  // },
-
-  applyVoucher: function(){
-    // may be handled by voucher class
-    // may require many smaller functions such as one to check the type of products in basket
+    this.basket = [];
+    this.value = 0;
   }
 
 };

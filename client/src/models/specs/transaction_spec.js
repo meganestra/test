@@ -13,12 +13,22 @@ beforeEach(function(){
 
   shoppingBasket = new ShoppingBasket();
 
-  fiveVoucher = new DiscountVoucher({"discountValue": 5, "eligibleValue": 5});
-  tenVoucher = new DiscountVoucher({"discountValue": 10, "eligibleValue": 50});
-  fifteenVoucher = new DiscountVoucher({
+  fiveVoucher = new DiscountVoucher({
+    "discountValue": 5,
+    "eligibleValue": 5,
+    "specialItems": []
+  });
+
+  tenVoucher = new DiscountVoucher({
     "discountValue": 10,
     "eligibleValue": 50,
-    "specialItem": "Footwear"
+    "specialItems": []
+  });
+
+  fifteenVoucher = new DiscountVoucher({
+    "discountValue": 15,
+    "eligibleValue": 75,
+    "specialItems": [{"category": "Footwear"}]
   });
 
   product1 = new Product({
@@ -50,19 +60,34 @@ beforeEach(function(){
 
 });
 
-describe('StockManager', function(){
+describe('Transaction', function(){
 
-  it('should check if a five pound discount voucher is eligible', function(){
+  it('should check if a basket contains the special items', function(){
     shoppingBasket.addProduct(product1);
-    shoppingBasket.addProduct(product3);
-    assert.equal(transaction.checkSimpleDiscountEligibility(shoppingBasket, fiveVoucher), true);
+    assert.equal(transaction.checkSpecialItemPresent(shoppingBasket, fifteenVoucher), true);
   });
 
-  it('should check if a ten pound discount voucher is eligible', function(){
-    shoppingBasket.addProduct(product1);
+  it('should check if a basket does not contain the special items', function(){
     shoppingBasket.addProduct(product3);
-    assert.equal(transaction.checkSimpleDiscountEligibility(shoppingBasket, tenVoucher), true);
+    assert.equal(transaction.checkSpecialItemPresent(shoppingBasket, fifteenVoucher), false);
   });
+
+  // it('should check if a basket meets the discount voucher threshold', function(){
+  //   shoppingBasket.addProduct(product1);
+  //   assert.equal()
+  // });
+
+  // it('should check if a five pound discount voucher is eligible', function(){
+  //   shoppingBasket.addProduct(product1);
+  //   shoppingBasket.addProduct(product3);
+  //   assert.equal(transaction.checkSimpleDiscountEligibility(shoppingBasket, fiveVoucher), true);
+  // });
+
+  // it('should check if a ten pound discount voucher is eligible', function(){
+  //   shoppingBasket.addProduct(product1);
+  //   shoppingBasket.addProduct(product3);
+  //   assert.equal(transaction.checkSimpleDiscountEligibility(shoppingBasket, tenVoucher), true);
+  // });
 
   // it('should check if a fifteen pound discount voucher is eligible', function(){
   //   shoppingBasket.addProduct(product3);
