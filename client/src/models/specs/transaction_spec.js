@@ -1,13 +1,13 @@
 var assert = require('assert');
 var Transaction = require('../transaction');
-var StockManager = require('../stock_manager');
+var Stock = require('../stock');
 var Product = require('../product');
 var ShoppingBasket = require('../shopping_basket');
 var DiscountVoucher = require('../discount_voucher');
 
 beforeEach(function(){
 
-  stockManager = new StockManager();
+  stock = new Stock();
 
   shoppingBasket = new ShoppingBasket();
 
@@ -49,7 +49,7 @@ beforeEach(function(){
     "department": "Women's",
     "category": "Footwear",
     "price": 99.00,
-    "inSale": false,
+    "salePrice": null,
     "quantityInStock": 5
   });
 
@@ -58,7 +58,7 @@ beforeEach(function(){
     "department": "Men's",
     "category": "Footwear",
     "price": 19.00,
-    "inSale": false,
+    "salePrice": null,
     "quantityInStock": 0
   });
 
@@ -67,8 +67,26 @@ beforeEach(function(){
     "department": "Men's",
     "category": "Casualwear",
     "price": 49.99,
-    "inSale": false,
+    "salePrice": null,
     "quantityInStock": 9
+  });
+
+  product4 = new Product({
+    "productName": "Fine Stripe Short Sleeve Shirt, Green",
+    "department": "Men's",
+    "category": "Casualwear",
+    "price": 49.99,
+    "salePrice": 39.99,
+    "quantityInStock": 3
+  });
+
+  product5 = new Product({
+    "productName": "Flip Flops, Red",
+    "department": "Men's",
+    "category": "Footwear",
+    "price": 19.00,
+    "salePrice": null,
+    "quantityInStock": 6
   });
 
 });
@@ -76,6 +94,7 @@ beforeEach(function(){
 describe('Transaction', function(){
 
   it('should check if a basket contains the special items', function(){
+    shoppingBasket.addProduct(product1);
     shoppingBasket.addProduct(product1);
     assert.equal(transactionWithFifteenVoucher.checkSpecialItemPresent(), true);
   });
@@ -135,6 +154,7 @@ describe('Transaction', function(){
     transactionWithFifteenVoucher.applyDiscountVoucher();
     assert.equal(shoppingBasket.value, 49.99);
   });
+
 
 });
 
